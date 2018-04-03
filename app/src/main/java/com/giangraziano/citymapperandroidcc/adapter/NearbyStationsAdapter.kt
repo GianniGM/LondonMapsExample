@@ -2,14 +2,12 @@ package com.giangraziano.citymapperandroidcc.adapter
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.View
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import com.giangraziano.citymapperandroidcc.R
 import com.giangraziano.citymapperandroidcc.model.Data
-import com.giangraziano.citymapperandroidcc.model.Station
 
 
 /**
@@ -58,11 +56,11 @@ class NearbyStationsAdapter(private val onElementClick: (Data, Context) -> Unit)
             view?.findViewById(R.id.live_arrivals3) as TextView
         }
 
-        fun setText(station: Data){
-            stationText.text = station.stationName
-            arrival1.text = station.arrival1
-            arrival2.text = station.arrival2
-            arrival3.text = station.arrival3
+        fun setText(data: Data?){
+            stationText.text = data?.stationName
+            arrival1.text = data?.arrival1 ?: "void"
+            arrival2.text = data?.arrival2 ?: "void"
+            arrival3.text = data?.arrival3 ?: "void"
         }
 
         fun setOnClick(onClick: (Context) -> Unit) {

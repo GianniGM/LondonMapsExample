@@ -3,7 +3,9 @@ package com.giangraziano.citymapperandroidcc
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -16,22 +18,22 @@ import java.io.Serializable
 
 const val EXTRA_STATION = "station_data"
 
-val hardCodedLatitude = 51.504831314
-val hardCodedLongitude = -0.123499506
+val hardCodedLatitude = 51.5101369
+val hardCodedLongitude = -0.1344048
 
 
 class MainActivity : AppCompatActivity() {
 
     private val recyclerView: RecyclerView by lazy {
-        stations_list.adapter = NearbyStationsAdapter { station, _ -> this.onClick(station)}
+        stations_list.adapter = NearbyStationsAdapter { station, _ -> this.onClick(station) }
         stations_list
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        serve(4) {
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        serve {
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         }
     }
@@ -54,13 +56,14 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun serve(abv: Int, messageCallback: (String) -> Unit) {
+    private fun serve(messageCallback: (String) -> Unit) {
         showProgressBar()
         //todo fix this and add data
-        callService(abv).subscribe(
+        callService(hardCodedLatitude, hardCodedLongitude).subscribe(
                 {
                     (recyclerView.adapter as NearbyStationsAdapter).setData(it.data)
                     hideProgressBar(true)
+                    Log.d("MAIN_ACTIVITY", it.toString())
                     messageCallback("Success :)")
                 },
                 {

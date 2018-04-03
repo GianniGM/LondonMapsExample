@@ -12,7 +12,13 @@ import retrofit2.http.Query
 interface MyService {
 
     //todo add this apis
-    @GET("v2/beers")
-    fun getStations(@Query("key") key: String, @Query("format") format: String, @Query("abv") abv: Int): Observable<Station>
+    @GET("StopPoint")
+    fun getStations(
+            @Query("app_key") key: String,
+            @Query("app_id") id: String,
+            @Query("stopTypes") format: String,
+            @Query("lat") lat: Double,
+            @Query("lon") lon: Double
+    ): Observable<Station>
 
 }

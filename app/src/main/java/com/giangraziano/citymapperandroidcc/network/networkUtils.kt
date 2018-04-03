@@ -8,14 +8,15 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit
 
 
 /**
  * Created by giannig on 03/04/18.
+ *
+ * "NaptanMetroAccessArea","NaptanMetroEntrance","NaptanMetroPlatform","NaptanMetroStation",
  */
 
-fun callService(abv: Int): Observable<Station> {
+fun callService(lat: Double, lon: Double): Observable<Station> {
     val scheduler = Schedulers.from(Executors.newSingleThreadExecutor())
 
     return Retrofit.Builder()
@@ -25,7 +26,12 @@ fun callService(abv: Int): Observable<Station> {
             .build()
             .create(MyService::class.java)
 
-            .getStations(NetworkData.apiKey, "json", abv)
+            .getStations(
+                    NetworkData.apiKey,
+                    NetworkData.appId,
+                    "NaptanMetroStation",
+                    lat, lon
+            )
             .subscribeOn(scheduler)
             .observeOn(AndroidSchedulers.mainThread())
 }
