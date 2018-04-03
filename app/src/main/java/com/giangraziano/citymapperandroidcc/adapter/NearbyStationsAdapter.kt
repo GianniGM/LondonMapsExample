@@ -32,7 +32,7 @@ class NearbyStationsAdapter(private val onElementClick: (Data, Context) -> Unit)
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): StationsViewHolder {
         val ctx = parent?.context
         val inflater = LayoutInflater.from(ctx)
-        val v = inflater.inflate(R.layout.activity_line_details, parent, false)
+        val v = inflater.inflate(R.layout.main_activity_line_item, parent, false)
 
         return StationsViewHolder(v)
     }
@@ -44,23 +44,23 @@ class NearbyStationsAdapter(private val onElementClick: (Data, Context) -> Unit)
 
     class StationsViewHolder(private val view: View?) : RecyclerView.ViewHolder(view) {
         private val stationText by lazy{
-            view?.findViewById(R.id.station_name) as TextView
+            view?.findViewById<TextView>(R.id.station_name) as TextView
         }
         private val arrival1 by lazy{
-            view?.findViewById(R.id.live_arrivals1) as TextView
+            view?.findViewById<TextView>(R.id.live_arrivals1) as TextView
         }
         private val arrival2 by lazy{
-            view?.findViewById(R.id.live_arrivals2) as TextView
+            view?.findViewById<TextView>(R.id.live_arrivals2) as TextView
         }
         private val arrival3 by lazy{
-            view?.findViewById(R.id.live_arrivals3) as TextView
+            view?.findViewById<TextView>(R.id.live_arrivals3) as TextView
         }
 
         fun setText(data: Data?){
             stationText.text = data?.stationName
-            arrival1.text = data?.arrival1 ?: "void"
-            arrival2.text = data?.arrival2 ?: "void"
-            arrival3.text = data?.arrival3 ?: "void"
+            arrival1.text = data?.arrival1
+            arrival2.text = data?.arrival2
+            arrival3.text = data?.arrival3
         }
 
         fun setOnClick(onClick: (Context) -> Unit) {

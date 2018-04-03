@@ -50,9 +50,9 @@ class MainActivity : AppCompatActivity() {
         error_text_message.visibility = if (loadingSuccess) TextView.GONE else TextView.VISIBLE
     }
 
-    private fun onClick(station: Data) {
+    private fun onClick(stationData: Data) {
         val intent = Intent(this, LineDetails::class.java)
-        intent.putExtra(EXTRA_STATION, station as Serializable)
+        intent.putExtra(EXTRA_STATION, stationData as Serializable)
         startActivity(intent)
     }
 

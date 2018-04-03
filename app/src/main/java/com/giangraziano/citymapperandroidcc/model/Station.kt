@@ -18,17 +18,17 @@ data class Station (
 data class Data (
         @SerializedName("platformName")
         @Expose
-        val stationName: String?,
+        val stationName: String? = "Station name",
 
         @SerializedName("icsCode")
         @Expose
-        val arrival1: String?,
+        val arrival1: String? = "arr 1",
 
         @SerializedName("smsCode")
         @Expose
-        val arrival2: String?,
+        val arrival2: String? = "arr 2",
 
         @SerializedName("stopType")
         @Expose
-        val arrival3: String?
+        val arrival3: String = "arr 3"
 ):Serializable
