@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import com.giangraziano.citymapperandroidcc.adapter.NearbyStationsAdapter
 import com.giangraziano.citymapperandroidcc.model.Data
 import com.giangraziano.citymapperandroidcc.network.callService
@@ -29,6 +30,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        serve(4) {
+            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun showProgressBar() {
