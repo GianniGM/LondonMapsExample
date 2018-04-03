@@ -8,16 +8,17 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import com.giangraziano.citymapperandroidcc.R
+import com.giangraziano.citymapperandroidcc.model.Data
 import com.giangraziano.citymapperandroidcc.model.Station
 
 
 /**
  * Created by giannig on 03/04/18.
  */
-class NearbyStationsAdapter(private val onElementClick: (Station, Context) -> Unit)
+class NearbyStationsAdapter(private val onElementClick: (Data, Context) -> Unit)
     : RecyclerView.Adapter<NearbyStationsAdapter.StationsViewHolder>(){
 
-    private lateinit var list: MutableList<Station>
+    private lateinit var list: MutableList<Data>
 
 
     override fun getItemCount(): Int {
@@ -38,7 +39,7 @@ class NearbyStationsAdapter(private val onElementClick: (Station, Context) -> Un
         return StationsViewHolder(v)
     }
 
-    fun setData(list :MutableList<Station>){
+    fun setData(list :MutableList<Data>){
         this.list = list
         notifyDataSetChanged()
     }
@@ -57,7 +58,7 @@ class NearbyStationsAdapter(private val onElementClick: (Station, Context) -> Un
             view?.findViewById(R.id.live_arrivals3) as TextView
         }
 
-        fun setText(station: Station){
+        fun setText(station: Data){
             stationText.text = station.stationName
             arrival1.text = station.arrival1
             arrival2.text = station.arrival2
