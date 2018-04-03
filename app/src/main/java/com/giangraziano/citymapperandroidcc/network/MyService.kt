@@ -11,6 +11,7 @@ import retrofit2.http.Query
  */
 interface MyService {
 
+    //todo add this apis
     @GET("v2/beers")
     fun getStations(@Query("key") key: String, @Query("format") format: String, @Query("abv") abv: Int): Observable<Station>
 
