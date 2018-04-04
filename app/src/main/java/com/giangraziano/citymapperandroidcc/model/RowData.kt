@@ -53,3 +53,6 @@ data class StopPoint(
         @Expose
         val stationNaptan: String? = "no station Naptan"
 )
+
+data class Line(val lineId: String, val lineName: String, val stations: MutableList<StopLine>)
+data class StopLine(val stationId: String )

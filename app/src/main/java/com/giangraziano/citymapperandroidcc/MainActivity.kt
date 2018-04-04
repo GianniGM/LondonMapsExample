@@ -16,9 +16,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 const val EXTRA_STATION = "station_data"
-
-val hardCodedLatitude = 51.5101369
-val hardCodedLongitude = -0.1344048
+const val DEFAULT_LOCATION_LAT = 51.5101369
+const val DEFAULT_LOCATION_LONG = -0.1344048
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        serve ("940GZZLUASL"){
+        serve("940GZZLUASL") {
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         }
     }
@@ -50,14 +49,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onClick(stationData: StationInfo) {
-        val intent = Intent(this, LineDetails::class.java)
+        val intent = Intent(this, LineDetailsActivity::class.java)
         intent.putExtra(EXTRA_STATION, stationData.naptanId)
         startActivity(intent)
     }
 
     private fun serve(naptanId: String, messageCallback: (String) -> Unit) {
         showProgressBar()
-        //todo fix this and add data
         callServiceArrivalsFromNaptan(naptanId).subscribe(
                 {
                     //todo adding right data format

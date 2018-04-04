@@ -1,8 +1,5 @@
 package com.giangraziano.citymapperandroidcc.common
 
-import android.content.Context
-import android.widget.Toast
-import java.sql.Time
 import java.util.concurrent.TimeUnit
 
 /**
