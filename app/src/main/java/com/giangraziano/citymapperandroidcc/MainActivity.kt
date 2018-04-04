@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        serve("940GZZLUASL") {
+        serve {
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         }
     }
@@ -54,9 +54,9 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun serve(naptanId: String, messageCallback: (String) -> Unit) {
+    private fun serve( messageCallback: (String) -> Unit) {
         showProgressBar()
-        callServiceArrivalsFromNaptan(naptanId).subscribe(
+        callServiceArrivalsFromNaptan().subscribe(
                 {
                     //todo adding right data format
                     val parsedData = it.groupBy { it.naptanId }
