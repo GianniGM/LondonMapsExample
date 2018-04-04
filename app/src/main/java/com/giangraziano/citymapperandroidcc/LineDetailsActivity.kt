@@ -36,7 +36,7 @@ class LineDetailsActivity : AppCompatActivity() {
         network.getLinesValue(lineId)
                 .subscribe(
                         {
-                            (recyclerView.adapter as LineAdapter).setData(it.stations)
+                            it.stations?.let { it1 -> (recyclerView.adapter as LineAdapter).setData(it1) }
                             messageCallback("Success :)")
                         },
                         {

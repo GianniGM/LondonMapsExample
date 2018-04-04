@@ -39,8 +39,10 @@ class LineAdapter : RecyclerView.Adapter<LineAdapter.LineViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: LineViewHolder?, position: Int) {
+        val element = list[position]
+
         holder?.setImage(true)
-        holder?.setText("Station Name")
+        element.stationId?.let { holder?.setText(it) }
     }
 
     inner class LineViewHolder(private val view: View?) : RecyclerView.ViewHolder(view) {
