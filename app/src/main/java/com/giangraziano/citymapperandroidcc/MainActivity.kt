@@ -55,10 +55,25 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra(EXTRA_STATION, stationData.naptanId)
         startActivity(intent)
     }
-
-    private fun getArrivals(messageCallback: (String) -> Unit) {
+    private fun getFromLatLon(messageCallback: (String) -> Unit) {
         showProgressBar()
-        network.callServiceArrivalsFromNaptan().subscribe(
+        network.getDataFromLatLon(DEFAULT_LOCATION_LAT, DEFAULT_LOCATION_LONG).subscribe(
+                {
+                    getArrivals(it.stopPoints[0].naptanId ?: "940GZZLUASL") {
+                        Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                    }
+                },
+                {
+                    hideProgressBar(false)
+                    messageCallback("Error :(")
+                }
+        )
+
+    }
+
+    private fun getArrivals(naptanId: String, messageCallback: (String) -> Unit) {
+        showProgressBar()
+        network.callServiceArrivalsFromNaptan(naptanId).subscribe(
                 {
                     //todo adding right data format
                     val parsedData = it.groupBy { it.naptanId }
@@ -82,22 +97,6 @@ class MainActivity : AppCompatActivity() {
                     messageCallback("Error :(")
                 }
         )
-    }
-
-    private fun getFromLatLon(messageCallback: (String) -> Unit) {
-        showProgressBar()
-        network.getDataFromLatLon(DEFAULT_LOCATION_LAT, DEFAULT_LOCATION_LONG).subscribe(
-                {
-                    getArrivals {
-                        Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-                    }
-                },
-                {
-                    hideProgressBar(false)
-                    messageCallback("Error :(")
-                }
-        )
-
     }
 
 }

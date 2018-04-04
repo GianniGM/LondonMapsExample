@@ -1,7 +1,5 @@
 package com.giangraziano.citymapperandroidcc.network
 
-import com.giangraziano.citymapperandroidcc.DEFAULT_LOCATION_LAT
-import com.giangraziano.citymapperandroidcc.DEFAULT_LOCATION_LONG
 import com.giangraziano.citymapperandroidcc.model.Arrival
 import com.giangraziano.citymapperandroidcc.model.StopPoints
 import io.reactivex.Observable
@@ -29,11 +27,11 @@ class Network {
             .build()
             .create(MyService::class.java)
 
-    fun callServiceArrivalsFromNaptan(): Observable<List<Arrival>> {
+    fun callServiceArrivalsFromNaptan(naptnanId: String): Observable<List<Arrival>> {
         val scheduler = Schedulers.from(Executors.newSingleThreadExecutor())
 
         return retrofit
-                .getArrivals("940GZZLUASL", NetworkData.apiKey, NetworkData.appId)
+                .getArrivals(naptnanId, NetworkData.apiKey, NetworkData.appId)
                 .subscribeOn(scheduler)
                 .observeOn(AndroidSchedulers.mainThread())
     }
