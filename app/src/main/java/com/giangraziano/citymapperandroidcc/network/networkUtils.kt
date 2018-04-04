@@ -16,7 +16,7 @@ import java.util.concurrent.Executors
  * "NaptanMetroAccessArea","NaptanMetroEntrance","NaptanMetroPlatform","NaptanMetroStation",
  */
 
-fun callService(lat: Double, lon: Double): Observable<List<Arrival>> {
+fun callServiceArrivalsFromNaptan(naptanId: String): Observable<List<Arrival>> {
     val scheduler = Schedulers.from(Executors.newSingleThreadExecutor())
 
 
@@ -27,7 +27,7 @@ fun callService(lat: Double, lon: Double): Observable<List<Arrival>> {
             .build()
             .create(MyService::class.java)
 
-            .getArrivals("940GZZLUASL",NetworkData.apiKey, NetworkData.appId)
+            .getArrivals(naptanId,NetworkData.apiKey, NetworkData.appId)
 //            .getStops(
 //                    NetworkData.apiKey,
 //                    NetworkData.appId,
@@ -37,3 +37,4 @@ fun callService(lat: Double, lon: Double): Observable<List<Arrival>> {
             .subscribeOn(scheduler)
             .observeOn(AndroidSchedulers.mainThread())
 }
+

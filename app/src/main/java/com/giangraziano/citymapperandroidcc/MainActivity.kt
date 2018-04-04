@@ -11,7 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.giangraziano.citymapperandroidcc.adapter.NearbyStationsAdapter
 import com.giangraziano.citymapperandroidcc.model.StationInfo
-import com.giangraziano.citymapperandroidcc.network.callService
+import com.giangraziano.citymapperandroidcc.network.callServiceArrivalsFromNaptan
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -31,7 +31,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        serve {
+
+        serve ("940GZZLUASL"){
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         }
     }
@@ -54,14 +55,13 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun serve(messageCallback: (String) -> Unit) {
+    private fun serve(naptanId: String, messageCallback: (String) -> Unit) {
         showProgressBar()
         //todo fix this and add data
-        callService(hardCodedLatitude, hardCodedLongitude).subscribe(
+        callServiceArrivalsFromNaptan(naptanId).subscribe(
                 {
                     //todo adding right data format
-                    val parsedData = it
-                            .groupBy { it.naptanId }
+                    val parsedData = it.groupBy { it.naptanId }
                             .map {
                                 StationInfo(
                                         it.key,

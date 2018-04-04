@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import com.giangraziano.citymapperandroidcc.R
+import com.giangraziano.citymapperandroidcc.common.converToTimeString
 import com.giangraziano.citymapperandroidcc.model.StationInfo
 
 
@@ -58,9 +59,9 @@ class NearbyStationsAdapter(private val onElementClick: (StationInfo, Context) -
 
         fun setText(data: StationInfo?){
             stationText.text = data?.stationName
-            arrival1.text = data?.arrival1.toString()
-            arrival2.text = data?.arrival2.toString()
-            arrival3.text = data?.arrival3.toString()
+            arrival1.text = data?.arrival1?.converToTimeString()
+            arrival2.text = data?.arrival2?.converToTimeString()
+            arrival3.text = data?.arrival3?.converToTimeString()
         }
 
         fun setOnClick(onClick: (Context) -> Unit) {
