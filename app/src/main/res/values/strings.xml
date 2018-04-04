@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">CityMapperAndroidCC</string>
     <string name="error">Something Gone wrong, I\'m sorry :(</string>
+    <string name="no_line_name">No Line Name</string>
 </resources>
