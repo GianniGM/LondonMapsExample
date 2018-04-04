@@ -1,8 +1,7 @@
 package com.giangraziano.citymapperandroidcc.network
 
-import android.util.Log
 import com.giangraziano.citymapperandroidcc.model.Arrival
-import com.giangraziano.citymapperandroidcc.model.Line
+import com.giangraziano.citymapperandroidcc.model.LineData
 import com.giangraziano.citymapperandroidcc.model.StopPoints
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -74,7 +73,7 @@ class Network {
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun getLinesValue(lineId: String): Observable<Line> {
+    fun getLinesValue(lineId: String): Observable<LineData> {
         return retrofit
                 .getLine(
                         lineId,

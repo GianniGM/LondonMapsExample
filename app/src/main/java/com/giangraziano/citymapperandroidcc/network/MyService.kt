@@ -1,7 +1,7 @@
 package com.giangraziano.citymapperandroidcc.network
 
 import com.giangraziano.citymapperandroidcc.model.Arrival
-import com.giangraziano.citymapperandroidcc.model.Line
+import com.giangraziano.citymapperandroidcc.model.LineData
 import com.giangraziano.citymapperandroidcc.model.StopPoints
 import io.reactivex.Observable
 import retrofit2.http.GET
@@ -37,6 +37,6 @@ interface MyService {
             @Path("id") lineId: String,
             @Query("app_key") key: String,
             @Query("app_id") id: String
-    ): Observable<Line>
+    ): Observable<LineData>
 
 }

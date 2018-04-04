@@ -4,16 +4,16 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.widget.Toast
 import com.giangraziano.citymapperandroidcc.adapter.LineAdapter
 import com.giangraziano.citymapperandroidcc.network.Network
 import kotlinx.android.synthetic.main.activity_line_details.*
-import kotlinx.android.synthetic.main.activity_main.*
 
 class LineDetailsActivity : AppCompatActivity() {
 
     private val recyclerView: RecyclerView by lazy {
-        line_detail_info.adapter = LineAdapter()
+        line_detail_info.adapter = LineAdapter(this)
         line_detail_info
     }
 
@@ -36,11 +36,16 @@ class LineDetailsActivity : AppCompatActivity() {
         network.getLinesValue(lineId)
                 .subscribe(
                         {
-                            it.stations?.let { it1 -> (recyclerView.adapter as LineAdapter).setData(it1) }
+                            val r = recyclerView.adapter as LineAdapter
+                            val list = it.stations?.filter {
+                                it.lines?.any { it.id == lineId }?: false
+                            }
+                            r.setData(list?.toMutableList())
                             messageCallback("Success :)")
                         },
                         {
-                            messageCallback("Error :(")
+                            Log.e("LINE_DETAIL_ACTIVITY", it.localizedMessage.toString())
+                            messageCallback("Error : ${it.localizedMessage}")
                         }
                 )
     }

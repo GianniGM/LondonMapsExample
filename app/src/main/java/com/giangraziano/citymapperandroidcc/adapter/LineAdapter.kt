@@ -8,18 +8,17 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.giangraziano.citymapperandroidcc.R
-import android.graphics.drawable.Drawable
 import com.giangraziano.citymapperandroidcc.common.setFromResources
-import com.giangraziano.citymapperandroidcc.model.StopLine
-import java.io.IOException
+import com.giangraziano.citymapperandroidcc.model.Stations
 
 
 /**
  * Created by ggmodica on 04/04/18.
  */
-class LineAdapter : RecyclerView.Adapter<LineAdapter.LineViewHolder>() {
+class LineAdapter (private val context: Context)
+    : RecyclerView.Adapter<LineAdapter.LineViewHolder>() {
 
-    private var list: MutableList<StopLine> = arrayListOf()
+    private var list: MutableList<Stations> = arrayListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): LineViewHolder {
         val ctx = parent?.context
@@ -29,9 +28,11 @@ class LineAdapter : RecyclerView.Adapter<LineAdapter.LineViewHolder>() {
         return LineViewHolder(v)
     }
 
-    fun setData(stations: MutableList<StopLine>) {
-        this.list = stations
-        notifyDataSetChanged()
+    fun setData(stations: MutableList<Stations>?) {
+        if(stations != null) {
+            this.list = stations
+            notifyDataSetChanged()
+        }
     }
 
     override fun getItemCount(): Int {
@@ -41,8 +42,8 @@ class LineAdapter : RecyclerView.Adapter<LineAdapter.LineViewHolder>() {
     override fun onBindViewHolder(holder: LineViewHolder?, position: Int) {
         val element = list[position]
 
-        holder?.setImage(true)
-        element.stationId?.let { holder?.setText(it) }
+        holder?.setImage(false)
+        holder?.setText(element.name.toString()) ?: context.getString(R.string.no_line_name)
     }
 
     inner class LineViewHolder(private val view: View?) : RecyclerView.ViewHolder(view) {
