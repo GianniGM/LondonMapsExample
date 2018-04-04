@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.giangraziano.citymapperandroidcc.DEFAULT_LOCATION_LAT
+import com.giangraziano.citymapperandroidcc.DEFAULT_LOCATION_LONG
 import com.giangraziano.citymapperandroidcc.R
 import com.giangraziano.citymapperandroidcc.common.setFromResources
 import com.giangraziano.citymapperandroidcc.model.Stations
@@ -19,6 +21,7 @@ class LineAdapter (private val context: Context)
     : RecyclerView.Adapter<LineAdapter.LineViewHolder>() {
 
     private var list: MutableList<Stations> = arrayListOf()
+    private lateinit var stationId: String
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): LineViewHolder {
         val ctx = parent?.context
@@ -28,9 +31,10 @@ class LineAdapter (private val context: Context)
         return LineViewHolder(v)
     }
 
-    fun setData(stations: MutableList<Stations>?) {
+    fun setData(stations: MutableList<Stations>?, stationId: String) {
         if(stations != null) {
             this.list = stations
+            this.stationId = stationId
             notifyDataSetChanged()
         }
     }
@@ -42,7 +46,7 @@ class LineAdapter (private val context: Context)
     override fun onBindViewHolder(holder: LineViewHolder?, position: Int) {
         val element = list[position]
 
-        holder?.setImage(false)
+        holder?.setImage(stationId == element.stationId)
         holder?.setText(element.name.toString()) ?: context.getString(R.string.no_line_name)
     }
 

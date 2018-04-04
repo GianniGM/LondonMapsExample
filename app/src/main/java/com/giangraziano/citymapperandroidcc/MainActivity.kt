@@ -16,6 +16,7 @@ import com.giangraziano.citymapperandroidcc.network.Network
 import kotlinx.android.synthetic.main.activity_main.*
 
 
+const val EXTRA_LINE = "line_data"
 const val EXTRA_STATION = "station_data"
 const val DEFAULT_LOCATION_LAT = 51.5101369
 const val DEFAULT_LOCATION_LONG = -0.1344048
@@ -53,7 +54,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun onClick(stationData: StationInfo) {
         val intent = Intent(this, LineDetailsActivity::class.java)
-        intent.putExtra(EXTRA_STATION, stationData.lineId)
+        intent.putExtra(EXTRA_LINE, stationData.lineId)
+        intent.putExtra(EXTRA_STATION, stationData.naptanId)
         startActivity(intent)
     }
 

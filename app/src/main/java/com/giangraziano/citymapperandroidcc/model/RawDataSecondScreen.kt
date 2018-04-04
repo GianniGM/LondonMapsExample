@@ -15,7 +15,9 @@ data class Stations(
         val stationId: String?,
         val stopType: String?,
         val lines: MutableList<Line>?,
-        val name: String?
+        val name: String?,
+        val lat: Double?,
+        val lon: Double
 )
 
 data class Line(
