@@ -1,6 +1,6 @@
 package com.giangraziano.citymapperandroidcc.network
 
-import com.giangraziano.citymapperandroidcc.model.Station
+import com.giangraziano.citymapperandroidcc.model.Arrival
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -16,8 +16,9 @@ import java.util.concurrent.Executors
  * "NaptanMetroAccessArea","NaptanMetroEntrance","NaptanMetroPlatform","NaptanMetroStation",
  */
 
-fun callService(lat: Double, lon: Double): Observable<Station> {
+fun callService(lat: Double, lon: Double): Observable<List<Arrival>> {
     val scheduler = Schedulers.from(Executors.newSingleThreadExecutor())
+
 
     return Retrofit.Builder()
             .baseUrl(NetworkData.baseUrl)
@@ -26,12 +27,13 @@ fun callService(lat: Double, lon: Double): Observable<Station> {
             .build()
             .create(MyService::class.java)
 
-            .getStations(
-                    NetworkData.apiKey,
-                    NetworkData.appId,
-                    "NaptanMetroStation",
-                    lat, lon
-            )
+            .getArrivals("940GZZLUASL",NetworkData.apiKey, NetworkData.appId)
+//            .getStops(
+//                    NetworkData.apiKey,
+//                    NetworkData.appId,
+//                    "NaptanMetroStation",
+//                    lat, lon
+//            )
             .subscribeOn(scheduler)
             .observeOn(AndroidSchedulers.mainThread())
 }

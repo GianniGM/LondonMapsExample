@@ -7,16 +7,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import com.giangraziano.citymapperandroidcc.R
-import com.giangraziano.citymapperandroidcc.model.Data
+import com.giangraziano.citymapperandroidcc.model.StationInfo
 
 
 /**
  * Created by giannig on 03/04/18.
  */
-class NearbyStationsAdapter(private val onElementClick: (Data, Context) -> Unit)
+class NearbyStationsAdapter(private val onElementClick: (StationInfo, Context) -> Unit)
     : RecyclerView.Adapter<NearbyStationsAdapter.StationsViewHolder>(){
 
-    private lateinit var list: MutableList<Data>
+    private lateinit var list: MutableList<StationInfo>
 
 
     override fun getItemCount(): Int {
@@ -37,30 +37,30 @@ class NearbyStationsAdapter(private val onElementClick: (Data, Context) -> Unit)
         return StationsViewHolder(v)
     }
 
-    fun setData(list :MutableList<Data>){
+    fun setData(list: MutableList<StationInfo>){
         this.list = list
         notifyDataSetChanged()
     }
 
     class StationsViewHolder(private val view: View?) : RecyclerView.ViewHolder(view) {
         private val stationText by lazy{
-            view?.findViewById<TextView>(R.id.station_name) as TextView
+            view?.findViewById(R.id.station_name) as TextView
         }
         private val arrival1 by lazy{
-            view?.findViewById<TextView>(R.id.live_arrivals1) as TextView
+            view?.findViewById(R.id.live_arrivals1) as TextView
         }
         private val arrival2 by lazy{
-            view?.findViewById<TextView>(R.id.live_arrivals2) as TextView
+            view?.findViewById(R.id.live_arrivals2) as TextView
         }
         private val arrival3 by lazy{
-            view?.findViewById<TextView>(R.id.live_arrivals3) as TextView
+            view?.findViewById(R.id.live_arrivals3) as TextView
         }
 
-        fun setText(data: Data?){
+        fun setText(data: StationInfo?){
             stationText.text = data?.stationName
-            arrival1.text = data?.arrival1
-            arrival2.text = data?.arrival2
-            arrival3.text = data?.arrival3
+            arrival1.text = data?.arrival1.toString()
+            arrival2.text = data?.arrival2.toString()
+            arrival3.text = data?.arrival3.toString()
         }
 
         fun setOnClick(onClick: (Context) -> Unit) {

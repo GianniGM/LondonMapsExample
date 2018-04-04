@@ -10,17 +10,15 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import com.giangraziano.citymapperandroidcc.adapter.NearbyStationsAdapter
-import com.giangraziano.citymapperandroidcc.model.Data
+import com.giangraziano.citymapperandroidcc.model.StationInfo
 import com.giangraziano.citymapperandroidcc.network.callService
 import kotlinx.android.synthetic.main.activity_main.*
-import java.io.Serializable
 
 
 const val EXTRA_STATION = "station_data"
 
 val hardCodedLatitude = 51.5101369
 val hardCodedLongitude = -0.1344048
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -50,9 +48,9 @@ class MainActivity : AppCompatActivity() {
         error_text_message.visibility = if (loadingSuccess) TextView.GONE else TextView.VISIBLE
     }
 
-    private fun onClick(stationData: Data) {
+    private fun onClick(stationData: StationInfo) {
         val intent = Intent(this, LineDetails::class.java)
-        intent.putExtra(EXTRA_STATION, stationData as Serializable)
+        intent.putExtra(EXTRA_STATION, stationData.naptanId)
         startActivity(intent)
     }
 
@@ -61,7 +59,20 @@ class MainActivity : AppCompatActivity() {
         //todo fix this and add data
         callService(hardCodedLatitude, hardCodedLongitude).subscribe(
                 {
-                    (recyclerView.adapter as NearbyStationsAdapter).setData(it.data)
+                    //todo adding right data format
+                    val parsedData = it
+                            .groupBy { it.naptanId }
+                            .map {
+                                StationInfo(
+                                        it.key,
+                                        it.value[0].stationName,
+                                        it.value[0].timeToStation,
+                                        it.value[1].timeToStation,
+                                        it.value[2].timeToStation
+                                )
+                            }
+
+                    (recyclerView.adapter as NearbyStationsAdapter).setData(parsedData as MutableList<StationInfo>)
                     hideProgressBar(true)
                     Log.d("MAIN_ACTIVITY", it.toString())
                     messageCallback("Success :)")
