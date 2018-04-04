@@ -11,7 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.giangraziano.citymapperandroidcc.adapter.NearbyStationsAdapter
 import com.giangraziano.citymapperandroidcc.model.StationInfo
-import com.giangraziano.citymapperandroidcc.network.callServiceArrivalsFromNaptan
+import com.giangraziano.citymapperandroidcc.network.Network
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -26,12 +26,14 @@ class MainActivity : AppCompatActivity() {
         stations_list
     }
 
+    private val network = Network()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        serve {
+        getFromLatLon {
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         }
     }
@@ -54,9 +56,9 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun serve( messageCallback: (String) -> Unit) {
+    private fun getArrivals(messageCallback: (String) -> Unit) {
         showProgressBar()
-        callServiceArrivalsFromNaptan().subscribe(
+        network.callServiceArrivalsFromNaptan().subscribe(
                 {
                     //todo adding right data format
                     val parsedData = it.groupBy { it.naptanId }
@@ -80,6 +82,22 @@ class MainActivity : AppCompatActivity() {
                     messageCallback("Error :(")
                 }
         )
+    }
+
+    private fun getFromLatLon(messageCallback: (String) -> Unit) {
+        showProgressBar()
+        network.getDataFromLatLon(DEFAULT_LOCATION_LAT, DEFAULT_LOCATION_LONG).subscribe(
+                {
+                    getArrivals {
+                        Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                    }
+                },
+                {
+                    hideProgressBar(false)
+                    messageCallback("Error :(")
+                }
+        )
+
     }
 
 }

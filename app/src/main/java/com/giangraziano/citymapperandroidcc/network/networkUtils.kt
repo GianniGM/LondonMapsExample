@@ -1,9 +1,9 @@
 package com.giangraziano.citymapperandroidcc.network
 
-import android.util.Log
 import com.giangraziano.citymapperandroidcc.DEFAULT_LOCATION_LAT
 import com.giangraziano.citymapperandroidcc.DEFAULT_LOCATION_LONG
 import com.giangraziano.citymapperandroidcc.model.Arrival
+import com.giangraziano.citymapperandroidcc.model.StopPoints
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -19,48 +19,35 @@ import java.util.concurrent.Executors
  * "NaptanMetroAccessArea","NaptanMetroEntrance","NaptanMetroPlatform","NaptanMetroStation",
  */
 
-fun callServiceArrivalsFromNaptan(): Observable<List<Arrival>> {
-    val scheduler = Schedulers.from(Executors.newSingleThreadExecutor())
+//todo: do a factory here i want instantiate network just only once
+class Network {
 
-//    val retrofit = Retrofit.Builder()
-//            .baseUrl(NetworkData.baseUrl)
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-//            .build()
-//            .create(MyService::class.java)
-//
-//    val getNearbyStation = retrofit.getStops(
-//            NetworkData.apiKey,
-//            NetworkData.appId,
-//            "NaptanMetroStation",
-//            DEFAULT_LOCATION_LAT,
-//            DEFAULT_LOCATION_LONG
-//    )
-//
-//    return getNearbyStation.flatMap { response ->
-//        return@flatMap retrofit.getArrivals(
-//                NetworkData.apiKey,
-//                NetworkData.appId,
-//                response.stopPoints[0].naptanId ?: "940GZZLUASL"
-//        )
-//    }
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
-
-    return Retrofit.Builder()
+    private val retrofit = Retrofit.Builder()
             .baseUrl(NetworkData.baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
             .create(MyService::class.java)
-//            .getStops(
-//                    NetworkData.apiKey,
-//                    NetworkData.appId,
-//                    "NaptanMetroStation",
-//                    lat, lon
-//            )
-            .getArrivals("940GZZLUASL",NetworkData.apiKey, NetworkData.appId)
-            .subscribeOn(scheduler)
-            .observeOn(AndroidSchedulers.mainThread())
-}
 
+    fun callServiceArrivalsFromNaptan(): Observable<List<Arrival>> {
+        val scheduler = Schedulers.from(Executors.newSingleThreadExecutor())
+
+        return retrofit
+                .getArrivals("940GZZLUASL", NetworkData.apiKey, NetworkData.appId)
+                .subscribeOn(scheduler)
+                .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun getDataFromLatLon(lat: Double, lon: Double): Observable<StopPoints> {
+        return retrofit
+                .getStops(
+                        NetworkData.apiKey,
+                        NetworkData.appId,
+                        "NaptanMetroStation",
+                        lat,
+                        lon
+                )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+    }
+}
