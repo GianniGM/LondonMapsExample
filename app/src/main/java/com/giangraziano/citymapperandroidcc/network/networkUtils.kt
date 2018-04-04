@@ -22,7 +22,6 @@ import java.util.concurrent.Executors
 fun callServiceArrivalsFromNaptan(): Observable<List<Arrival>> {
     val scheduler = Schedulers.from(Executors.newSingleThreadExecutor())
 
-    //
 //    val retrofit = Retrofit.Builder()
 //            .baseUrl(NetworkData.baseUrl)
 //            .addConverterFactory(GsonConverterFactory.create())

@@ -55,7 +55,6 @@ class LineAdapter(private val ctx: Context) : RecyclerView.Adapter<LineAdapter.L
         }
 
         fun setImage(isCurrent: Boolean) {
-
             if (isCurrent) {
                 imageCurrentPosition.visibility = View.VISIBLE
                 imageLineBus.visibility = View.GONE
