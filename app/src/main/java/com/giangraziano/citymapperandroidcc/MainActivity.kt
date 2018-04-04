@@ -61,17 +61,27 @@ class MainActivity : AppCompatActivity() {
 
     private fun serve(messageCallback: (String) -> Unit) {
         showProgressBar()
+
+        //first start
+        network.getFirstData(DEFAULT_LOCATION_LAT, DEFAULT_LOCATION_LONG).subscribe(
+                {
+                    parseReceivedRawData(it)
+                    messageCallback("Updated :)")
+                },
+                {
+                    hideProgressBar(false)
+                    messageCallback("Error :(")
+                }
+        )
+
+        //scheduled
         network.getData(DEFAULT_LOCATION_LAT, DEFAULT_LOCATION_LONG)
                 .subscribe(
                         {
                             parseReceivedRawData(it)
-                            messageCallback("Success :)")
-
+                            messageCallback("Updated :)")
                         },
-                        {
-                            hideProgressBar(false)
-                            messageCallback("Error :(")
-                        }
+                        { messageCallback("Error :(") }
                 )
     }
 
