@@ -18,7 +18,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LineDetails"></activity>
+        <activity android:name=".LineDetails"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.giangraziano.citymapperandroidcc.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
