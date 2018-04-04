@@ -61,9 +61,10 @@ class Network {
         )
 
         return pointRequest
+                .flatMapIterable { response -> response.stopPoints.map { it.naptanId } }
                 .flatMap { response ->
                     return@flatMap retrofit.getArrivals(
-                            response.stopPoints[0].naptanId.toString(),
+                            response,
                             NetworkData.apiKey,
                             NetworkData.appId
                     )

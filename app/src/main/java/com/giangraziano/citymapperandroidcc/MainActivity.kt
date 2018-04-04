@@ -10,6 +10,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import com.giangraziano.citymapperandroidcc.adapter.NearbyStationsAdapter
+import com.giangraziano.citymapperandroidcc.model.Arrival
 import com.giangraziano.citymapperandroidcc.model.StationInfo
 import com.giangraziano.citymapperandroidcc.network.Network
 import kotlinx.android.synthetic.main.activity_main.*
@@ -32,10 +33,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         recyclerView.layoutManager = LinearLayoutManager(this)
-
-//        getFromLatLon {
-//            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-//        }
 
         serve {
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
@@ -64,20 +61,7 @@ class MainActivity : AppCompatActivity() {
         showProgressBar()
         network.getData(DEFAULT_LOCATION_LAT, DEFAULT_LOCATION_LONG).subscribe(
                 {
-                    val parsedData = it.groupBy { it.naptanId }
-                            .map {
-                                StationInfo(
-                                        it.key,
-                                        it.value[0].stationName,
-                                        it.value[0].timeToStation,
-                                        it.value[1].timeToStation,
-                                        it.value[2].timeToStation
-                                )
-                            }
-
-                    (recyclerView.adapter as NearbyStationsAdapter).setData(parsedData as MutableList<StationInfo>)
-                    hideProgressBar(true)
-                    Log.d("MAIN_ACTIVITY", it.toString())
+                    parseReceivedRawData(it)
                     messageCallback("Success :)")
 
                 },
@@ -86,6 +70,24 @@ class MainActivity : AppCompatActivity() {
                     messageCallback("Error :(")
                 }
         )
+    }
+
+    private fun parseReceivedRawData(it: List<Arrival>) {
+        val parsedData = it
+                .groupBy { it.naptanId }
+                .map {
+                    StationInfo(
+                            it.key,
+                            it.value[0].stationName,
+                            it.value[0].timeToStation,
+                            it.value[1].timeToStation,
+                            it.value[2].timeToStation
+                    )
+                }
+
+        (recyclerView.adapter as NearbyStationsAdapter).setData(parsedData as MutableList<StationInfo>)
+        hideProgressBar(true)
+        Log.d("MAIN_ACTIVITY", it.toString())
     }
 
 //    private fun getFromLatLon(messageCallback: (String) -> Unit) {

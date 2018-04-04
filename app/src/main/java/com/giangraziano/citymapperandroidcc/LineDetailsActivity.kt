@@ -18,6 +18,6 @@ class LineDetailsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_line_details)
 
         recyclerView.layoutManager = LinearLayoutManager(this)
-        val station = intent.extras.get(EXTRA_STATION)
+        val stationNaptanId = intent.extras.get(EXTRA_STATION)
     }
 }
