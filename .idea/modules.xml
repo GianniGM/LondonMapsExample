@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CityMapperAndroidCC.iml" filepath="$PROJECT_DIR$/CityMapperAndroidCC.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/cityMapper.iml" filepath="$PROJECT_DIR$/cityMapper.iml" />
     </modules>
   </component>

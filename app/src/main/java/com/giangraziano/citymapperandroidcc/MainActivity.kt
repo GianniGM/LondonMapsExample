@@ -33,7 +33,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        getFromLatLon {
+//        getFromLatLon {
+//            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+//        }
+
+        serve {
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         }
     }
@@ -55,27 +59,11 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra(EXTRA_STATION, stationData.naptanId)
         startActivity(intent)
     }
-    private fun getFromLatLon(messageCallback: (String) -> Unit) {
-        showProgressBar()
-        network.getDataFromLatLon(DEFAULT_LOCATION_LAT, DEFAULT_LOCATION_LONG).subscribe(
-                {
-                    getArrivals(it.stopPoints[0].naptanId ?: "940GZZLUASL") {
-                        Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-                    }
-                },
-                {
-                    hideProgressBar(false)
-                    messageCallback("Error :(")
-                }
-        )
 
-    }
-
-    private fun getArrivals(naptanId: String, messageCallback: (String) -> Unit) {
+    private fun serve(messageCallback: (String) -> Unit) {
         showProgressBar()
-        network.callServiceArrivalsFromNaptan(naptanId).subscribe(
+        network.getData(DEFAULT_LOCATION_LAT, DEFAULT_LOCATION_LONG).subscribe(
                 {
-                    //todo adding right data format
                     val parsedData = it.groupBy { it.naptanId }
                             .map {
                                 StationInfo(
@@ -91,6 +79,7 @@ class MainActivity : AppCompatActivity() {
                     hideProgressBar(true)
                     Log.d("MAIN_ACTIVITY", it.toString())
                     messageCallback("Success :)")
+
                 },
                 {
                     hideProgressBar(false)
@@ -98,5 +87,49 @@ class MainActivity : AppCompatActivity() {
                 }
         )
     }
+
+//    private fun getFromLatLon(messageCallback: (String) -> Unit) {
+//        showProgressBar()
+//        network.getDataFromLatLon(DEFAULT_LOCATION_LAT, DEFAULT_LOCATION_LONG).subscribe(
+//                {
+//                    getArrivals(it.stopPoints[0].naptanId ?: "940GZZLUASL") {
+//                        Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+//                    }
+//                },
+//                {
+//                    hideProgressBar(false)
+//                    messageCallback("Error :(")
+//                }
+//        )
+//
+//    }
+//
+//    private fun getArrivals(naptanId: String, messageCallback: (String) -> Unit) {
+//        showProgressBar()
+//        network.callServiceArrivalsFromNaptan(naptanId).subscribe(
+//                {
+//                    //todo adding right data format
+//                    val parsedData = it.groupBy { it.naptanId }
+//                            .map {
+//                                StationInfo(
+//                                        it.key,
+//                                        it.value[0].stationName,
+//                                        it.value[0].timeToStation,
+//                                        it.value[1].timeToStation,
+//                                        it.value[2].timeToStation
+//                                )
+//                            }
+//
+//                    (recyclerView.adapter as NearbyStationsAdapter).setData(parsedData as MutableList<StationInfo>)
+//                    hideProgressBar(true)
+//                    Log.d("MAIN_ACTIVITY", it.toString())
+//                    messageCallback("Success :)")
+//                },
+//                {
+//                    hideProgressBar(false)
+//                    messageCallback("Error :(")
+//                }
+//        )
+//    }
 
 }

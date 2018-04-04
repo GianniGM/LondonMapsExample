@@ -1,5 +1,6 @@
 package com.giangraziano.citymapperandroidcc.network
 
+import android.util.Log
 import com.giangraziano.citymapperandroidcc.model.Arrival
 import com.giangraziano.citymapperandroidcc.model.StopPoints
 import io.reactivex.Observable
@@ -45,6 +46,28 @@ class Network {
                         lat,
                         lon
                 )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun getData(lat: Double, lon: Double): Observable<List<Arrival>> {
+
+        val pointRequest = retrofit.getStops(
+                NetworkData.apiKey,
+                NetworkData.appId,
+                "NaptanMetroStation",
+                lat,
+                lon
+        )
+
+        return pointRequest
+                .flatMap { response ->
+                    return@flatMap retrofit.getArrivals(
+                            response.stopPoints[0].naptanId.toString(),
+                            NetworkData.apiKey,
+                            NetworkData.appId
+                    )
+                }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }
