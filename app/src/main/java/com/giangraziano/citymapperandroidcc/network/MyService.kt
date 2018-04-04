@@ -34,7 +34,7 @@ interface MyService {
     //https://api.tfl.gov.uk/Line/victoria/Route/Sequence/inbound
     @GET("Line/{id}/Route/Sequence/inbound")
     fun getLine(
-            @Path("id") naptanId: String,
+            @Path("id") lineId: String,
             @Query("app_key") key: String,
             @Query("app_id") id: String
     ): Observable<Line>

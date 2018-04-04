@@ -10,13 +10,16 @@ import android.widget.TextView
 import com.giangraziano.citymapperandroidcc.R
 import android.graphics.drawable.Drawable
 import com.giangraziano.citymapperandroidcc.common.setFromResources
+import com.giangraziano.citymapperandroidcc.model.StopLine
 import java.io.IOException
 
 
 /**
  * Created by ggmodica on 04/04/18.
  */
-class LineAdapter(private val ctx: Context) : RecyclerView.Adapter<LineAdapter.LineViewHolder>() {
+class LineAdapter : RecyclerView.Adapter<LineAdapter.LineViewHolder>() {
+
+    private var list: MutableList<StopLine> = arrayListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): LineViewHolder {
         val ctx = parent?.context
@@ -26,8 +29,13 @@ class LineAdapter(private val ctx: Context) : RecyclerView.Adapter<LineAdapter.L
         return LineViewHolder(v)
     }
 
+    fun setData(stations: MutableList<StopLine>) {
+        this.list = stations
+        notifyDataSetChanged()
+    }
+
     override fun getItemCount(): Int {
-        return 1
+        return list.size
     }
 
     override fun onBindViewHolder(holder: LineViewHolder?, position: Int) {

@@ -53,23 +53,24 @@ class MainActivity : AppCompatActivity() {
 
     private fun onClick(stationData: StationInfo) {
         val intent = Intent(this, LineDetailsActivity::class.java)
-        intent.putExtra(EXTRA_STATION, stationData.naptanId)
+        intent.putExtra(EXTRA_STATION, stationData.lineId)
         startActivity(intent)
     }
 
     private fun serve(messageCallback: (String) -> Unit) {
         showProgressBar()
-        network.getData(DEFAULT_LOCATION_LAT, DEFAULT_LOCATION_LONG).subscribe(
-                {
-                    parseReceivedRawData(it)
-                    messageCallback("Success :)")
+        network.getData(DEFAULT_LOCATION_LAT, DEFAULT_LOCATION_LONG)
+                .subscribe(
+                        {
+                            parseReceivedRawData(it)
+                            messageCallback("Success :)")
 
-                },
-                {
-                    hideProgressBar(false)
-                    messageCallback("Error :(")
-                }
-        )
+                        },
+                        {
+                            hideProgressBar(false)
+                            messageCallback("Error :(")
+                        }
+                )
     }
 
     private fun parseReceivedRawData(it: List<Arrival>) {
@@ -79,6 +80,7 @@ class MainActivity : AppCompatActivity() {
                     StationInfo(
                             it.key,
                             it.value[0].stationName,
+                            it.value[0].lineId,
                             it.value[0].timeToStation,
                             it.value[1].timeToStation,
                             it.value[2].timeToStation
