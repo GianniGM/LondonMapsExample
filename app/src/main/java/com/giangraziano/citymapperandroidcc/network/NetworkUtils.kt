@@ -10,6 +10,10 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
+import io.reactivex.Scheduler
+
+
 
 
 /**
@@ -17,6 +21,7 @@ import java.util.concurrent.Executors
  *
  * "NaptanMetroAccessArea","NaptanMetroEntrance","NaptanMetroPlatform","NaptanMetroStation",
  */
+const val DEFAULT_DELAY_SECONDS: Long = 30
 
 //todo: do a factory here i want instantiate network just only once
 class Network {
@@ -28,39 +33,18 @@ class Network {
             .build()
             .create(MyService::class.java)
 
-    fun callServiceArrivalsFromNaptan(naptnanId: String): Observable<List<Arrival>> {
+    fun getData(lat: Double, lon: Double): Observable<List<Arrival>> {
+
         val scheduler = Schedulers.from(Executors.newSingleThreadExecutor())
 
-        return retrofit
-                .getArrivals(naptnanId, NetworkData.apiKey, NetworkData.appId)
-                .subscribeOn(scheduler)
-                .observeOn(AndroidSchedulers.mainThread())
-    }
-
-    fun getDataFromLatLon(lat: Double, lon: Double): Observable<StopPoints> {
-        return retrofit
-                .getStops(
+        return Observable.interval(DEFAULT_DELAY_SECONDS, TimeUnit.SECONDS)
+                .flatMap { retrofit.getStops(
                         NetworkData.apiKey,
                         NetworkData.appId,
                         "NaptanMetroStation",
                         lat,
                         lon
-                )
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-    }
-
-    fun getData(lat: Double, lon: Double): Observable<List<Arrival>> {
-
-        val pointRequest = retrofit.getStops(
-                NetworkData.apiKey,
-                NetworkData.appId,
-                "NaptanMetroStation",
-                lat,
-                lon
-        )
-
-        return pointRequest
+                ) }
                 .flatMapIterable { response -> response.stopPoints.map { it.naptanId } }
                 .flatMap { response ->
                     return@flatMap retrofit.getArrivals(
@@ -69,7 +53,7 @@ class Network {
                             NetworkData.appId
                     )
                 }
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(scheduler)
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
