@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.giangraziano.citymapperandroidcc.R
 import android.graphics.drawable.Drawable
+import com.giangraziano.citymapperandroidcc.common.setFromResources
 import java.io.IOException
 
 
@@ -30,7 +31,7 @@ class LineAdapter(private val ctx: Context) : RecyclerView.Adapter<LineAdapter.L
     }
 
     override fun onBindViewHolder(holder: LineViewHolder?, position: Int) {
-        holder?.setImage(false)
+        holder?.setImage(true)
         holder?.setText("Station Name")
     }
 
@@ -39,17 +40,13 @@ class LineAdapter(private val ctx: Context) : RecyclerView.Adapter<LineAdapter.L
         //todo: fix this duplicate code: this should be a perfect extension function
         private val imageCurrentPosition by lazy {
             val image = view?.findViewById(R.id.stop_image_current) as ImageView
-            val stream = ctx.assets.open("redLinePoint.png")
-            val drawable = Drawable.createFromStream(stream, null)
-            image.setImageDrawable(drawable)
+            image.setFromResources("redLinePoint.png")
             image
         }
 
         private val imageLineBus by lazy {
             val image = view?.findViewById(R.id.stop_image_line) as ImageView
-            val stream = ctx.assets.open("redLine.jpg")
-            val drawable = Drawable.createFromStream(stream, null)
-            image.setImageDrawable(drawable)
+            image.setFromResources("redLine.jpg")
             image
         }
 
@@ -58,6 +55,7 @@ class LineAdapter(private val ctx: Context) : RecyclerView.Adapter<LineAdapter.L
         }
 
         fun setImage(isCurrent: Boolean) {
+
             if (isCurrent) {
                 imageCurrentPosition.visibility = View.VISIBLE
                 imageLineBus.visibility = View.GONE
