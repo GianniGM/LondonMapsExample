@@ -15,7 +15,7 @@ import com.giangraziano.citymapperandroidcc.model.StationInfo
  * Created by giannig on 03/04/18.
  */
 class NearbyStationsAdapter(private val onElementClick: (StationInfo, Context) -> Unit)
-    : RecyclerView.Adapter<NearbyStationsAdapter.StationsViewHolder>(){
+    : RecyclerView.Adapter<NearbyStationsAdapter.StationsViewHolder>() {
 
     private lateinit var list: MutableList<StationInfo>
 
@@ -38,26 +38,19 @@ class NearbyStationsAdapter(private val onElementClick: (StationInfo, Context) -
         return StationsViewHolder(v)
     }
 
-    fun setData(list: MutableList<StationInfo>){
+    fun setData(list: MutableList<StationInfo>) {
         this.list = list
         notifyDataSetChanged()
     }
 
     class StationsViewHolder(private val view: View?) : RecyclerView.ViewHolder(view) {
-        private val stationText by lazy{
-            view?.findViewById(R.id.station_name) as TextView
-        }
-        private val arrival1 by lazy{
-            view?.findViewById(R.id.live_arrivals1) as TextView
-        }
-        private val arrival2 by lazy{
-            view?.findViewById(R.id.live_arrivals2) as TextView
-        }
-        private val arrival3 by lazy{
-            view?.findViewById(R.id.live_arrivals3) as TextView
-        }
 
-        fun setText(data: StationInfo?){
+        private val stationText = view?.findViewById(R.id.station_name) as TextView
+        private val arrival1 = view?.findViewById(R.id.live_arrivals1) as TextView
+        private val arrival2 = view?.findViewById(R.id.live_arrivals2) as TextView
+        private val arrival3 = view?.findViewById(R.id.live_arrivals3) as TextView
+
+        fun setText(data: StationInfo?) {
             stationText.text = data?.stationName
             arrival1.text = data?.arrival1?.converToTimeString()
             arrival2.text = data?.arrival2?.converToTimeString()
