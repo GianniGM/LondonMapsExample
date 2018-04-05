@@ -87,6 +87,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun parseReceivedRawData(it: List<Arrival>) {
         val parsedData = it
+                .sortedBy { it.timeToStation }
                 .groupBy { it.naptanId }
                 .map {
                     StationInfo(
