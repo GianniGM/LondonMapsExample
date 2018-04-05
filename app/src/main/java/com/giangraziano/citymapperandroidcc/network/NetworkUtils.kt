@@ -54,16 +54,20 @@ class Network {
 
     fun getData(lat: Double, lon: Double): Observable<List<Arrival>> {
 
-        val scheduler = Schedulers.from(Executors.newSingleThreadExecutor())
+        val scheduler = Schedulers.from(Executors.newCachedThreadPool())
+        val maxRequests = 42
 
-        return Observable.interval(DEFAULT_DELAY_SECONDS, TimeUnit.SECONDS)
-                .flatMap { retrofit.getStops(
-                        NetworkData.apiKey,
-                        NetworkData.appId,
-                        "NaptanMetroStation",
-                        lat,
-                        lon
-                ) }
+        return Observable
+                .interval(DEFAULT_DELAY_SECONDS, TimeUnit.SECONDS).take(maxRequests.toLong())
+                .flatMap {
+                    retrofit.getStops(
+                            NetworkData.apiKey,
+                            NetworkData.appId,
+                            "NaptanMetroStation",
+                            lat,
+                            lon
+                    )
+                }
                 .flatMapIterable { response -> response.stopPoints.map { it.naptanId } }
                 .flatMap { response ->
                     return@flatMap retrofit.getArrivals(
