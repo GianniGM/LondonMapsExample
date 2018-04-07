@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import com.giangraziano.citymapperandroidcc.R
-import com.giangraziano.citymapperandroidcc.common.converToTimeString
+import com.giangraziano.citymapperandroidcc.extensions.converToTimeString
 import com.giangraziano.citymapperandroidcc.model.StationInfo
 
 
@@ -17,8 +17,7 @@ import com.giangraziano.citymapperandroidcc.model.StationInfo
 class NearbyStationsAdapter(private val onElementClick: (StationInfo, Context) -> Unit)
     : RecyclerView.Adapter<NearbyStationsAdapter.StationsViewHolder>() {
 
-    private lateinit var list: MutableList<StationInfo>
-
+    private var list: MutableList<StationInfo> = mutableListOf()
 
     override fun getItemCount(): Int {
         return list.size
@@ -39,6 +38,7 @@ class NearbyStationsAdapter(private val onElementClick: (StationInfo, Context) -
     }
 
     fun setData(list: MutableList<StationInfo>) {
+        this.list.clear()
         this.list = list
         notifyDataSetChanged()
     }

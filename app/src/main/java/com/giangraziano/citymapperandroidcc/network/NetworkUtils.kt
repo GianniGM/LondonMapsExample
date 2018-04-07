@@ -1,5 +1,6 @@
 package com.giangraziano.citymapperandroidcc.network
 
+import android.util.Log
 import com.giangraziano.citymapperandroidcc.model.Arrival
 import com.giangraziano.citymapperandroidcc.model.LineData
 import io.reactivex.Observable
@@ -18,10 +19,18 @@ import java.util.concurrent.TimeUnit
  */
 
 //todo: problem in this way i must to wait 30 seconds first to open my app :/
-const val DEFAULT_DELAY_SECONDS: Long = 30
+const val DEFAULT_DELAY_SECONDS: Long = 5
 
 //todo: do a factory here i want instantiate network just only once
 class Network {
+
+    companion object {
+        private val TAG = "NETWORK_UTILS"
+    }
+
+    private var subscribe: Observable<List<Arrival>>? = null
+
+    private val scheduler = Schedulers.from(Executors.newCachedThreadPool())
     private val retrofit = Retrofit.Builder()
             .baseUrl(NetworkData.baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
@@ -52,12 +61,17 @@ class Network {
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun getData(lat: Double, lon: Double): Observable<List<Arrival>> {
+    fun stopScheduler() {
+        Log.d(TAG, "unsubscribe")
+        this.subscribe?.unsubscribeOn(this.scheduler)
+    }
 
-        val scheduler = Schedulers.from(Executors.newCachedThreadPool())
+    fun scheduleData(lat: Double, lon: Double): Observable<List<Arrival>>? {
+
         val maxRequests = 42
 
-        return Observable
+        stopScheduler()
+        this.subscribe = Observable
                 .interval(DEFAULT_DELAY_SECONDS, TimeUnit.SECONDS).take(maxRequests.toLong())
                 .flatMap {
                     retrofit.getStops(
@@ -76,8 +90,10 @@ class Network {
                             NetworkData.appId
                     )
                 }
-                .subscribeOn(scheduler)
+                .subscribeOn(this.scheduler)
                 .observeOn(AndroidSchedulers.mainThread())
+
+        return this.subscribe
     }
 
     fun getLinesValue(lineId: String): Observable<LineData> {
