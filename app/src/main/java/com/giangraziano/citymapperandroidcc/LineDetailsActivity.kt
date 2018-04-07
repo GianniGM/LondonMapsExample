@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
+import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import com.giangraziano.citymapperandroidcc.adapter.LineAdapter
 import com.giangraziano.citymapperandroidcc.network.Network
@@ -33,6 +35,7 @@ class LineDetailsActivity : AppCompatActivity() {
     }
 
     private fun serve(lineId: String, stationId: String, messageCallback: (String) -> Unit) {
+        showProgressBar()
         network.getLinesValue(lineId)
                 .subscribe(
                         {
@@ -42,11 +45,23 @@ class LineDetailsActivity : AppCompatActivity() {
                             }
                             r.setData(list?.toMutableList(), stationId)
                             messageCallback("Success :)")
+                            hideProgressBar(true)
                         },
                         {
                             Log.e("LINE_DETAIL_ACTIVITY", it.localizedMessage.toString())
                             messageCallback("Error : ${it.localizedMessage}")
+                            hideProgressBar(false)
                         }
                 )
+    }
+
+    private fun showProgressBar() {
+        progress_bar_details.visibility = ProgressBar.VISIBLE
+        recyclerView.visibility = RecyclerView.GONE
+    }
+
+    private fun hideProgressBar(loadingSuccess: Boolean) {
+        progress_bar_details.visibility = ProgressBar.GONE
+        recyclerView.visibility = if (loadingSuccess) RecyclerView.VISIBLE else RecyclerView.GONE
     }
 }
