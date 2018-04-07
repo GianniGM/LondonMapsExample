@@ -7,10 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.giangraziano.citymapperandroidcc.DEFAULT_LOCATION_LAT
-import com.giangraziano.citymapperandroidcc.DEFAULT_LOCATION_LONG
 import com.giangraziano.citymapperandroidcc.R
-import com.giangraziano.citymapperandroidcc.common.setFromResources
+import com.giangraziano.citymapperandroidcc.extensions.setFromResources
 import com.giangraziano.citymapperandroidcc.model.Stations
 
 
