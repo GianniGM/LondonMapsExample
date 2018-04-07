@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">CityMapperAndroidCC</string>
-    <string name="error">Something Gone wrong, I\'m sorry :(</string>
+    <string name="app_name">CityMapper Challenge</string>
+    <string name="error"> You must located in London, I\'m sorry :(</string>
     <string name="no_line_name">No Line Name</string>
+    <string name="not_located_in_london">"You are not located in London\n Will be set default position"</string>
+    <string name="updated_message">\"Updated :)\"</string>
 </resources>
