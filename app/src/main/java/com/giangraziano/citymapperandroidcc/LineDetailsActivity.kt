@@ -6,10 +6,9 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
 import com.giangraziano.citymapperandroidcc.adapter.LineAdapter
-import com.giangraziano.citymapperandroidcc.network.Network
+import com.giangraziano.citymapperandroidcc.network.NetworkUtils
 import kotlinx.android.synthetic.main.activity_line_details.*
 
 class LineDetailsActivity : AppCompatActivity() {
@@ -19,7 +18,7 @@ class LineDetailsActivity : AppCompatActivity() {
         line_detail_info
     }
 
-    private val network = Network()
+    private val network = NetworkUtils()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +28,7 @@ class LineDetailsActivity : AppCompatActivity() {
         val lineId = intent.extras.get(EXTRA_LINE).toString()
         val stationId = intent.extras.get(EXTRA_STATION).toString()
 
+        showProgressBar()
         serve(lineId, stationId) {
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         }
@@ -41,7 +41,7 @@ class LineDetailsActivity : AppCompatActivity() {
                         {
                             val r = recyclerView.adapter as LineAdapter
                             val list = it.stations?.filter {
-                                it.lines?.any { it.id == lineId }?: false
+                                it.lines?.any { it.id == lineId } ?: false
                             }
                             r.setData(list?.toMutableList(), stationId)
                             messageCallback("Success :)")

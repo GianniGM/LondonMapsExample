@@ -20,7 +20,7 @@ import com.giangraziano.citymapperandroidcc.extensions.requestPermission
 import com.giangraziano.citymapperandroidcc.extensions.shouldShowPermissionRationale
 import com.giangraziano.citymapperandroidcc.model.Arrival
 import com.giangraziano.citymapperandroidcc.model.StationInfo
-import com.giangraziano.citymapperandroidcc.network.Network
+import com.giangraziano.citymapperandroidcc.network.NetworkUtils
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -45,9 +45,8 @@ class MainActivity : AppCompatActivity() {
         stations_list
     }
 
-    private val network = Network()
+    private val network = NetworkUtils()
     private lateinit var locationManager: LocationManager
-    private var started = false
     private var locatedInLondon = true
 
     private var currentPosition = Position(lat = DEFAULT_LOCATION_LAT, lon = DEFAULT_LOCATION_LON)
@@ -65,11 +64,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        if (!started) {
-            getPosition()
-            started = true
-            showProgressBar()
-        }
+        getPosition()
+        showProgressBar()
+
     }
 
     private fun getPosition() {

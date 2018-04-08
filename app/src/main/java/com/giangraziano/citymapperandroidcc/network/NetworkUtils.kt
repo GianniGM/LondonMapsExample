@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit
 const val DEFAULT_DELAY_SECONDS: Long = 5
 
 //todo: do a factory here i want instantiate network just only once
-class Network {
+class NetworkUtils {
 
     companion object {
         private val TAG = "NETWORK_UTILS"
