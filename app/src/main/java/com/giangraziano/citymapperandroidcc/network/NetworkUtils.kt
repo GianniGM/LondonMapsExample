@@ -18,10 +18,9 @@ import java.util.concurrent.TimeUnit
  * "NaptanMetroAccessArea","NaptanMetroEntrance","NaptanMetroPlatform","NaptanMetroStation",
  */
 
-//todo: problem in this way i must to wait 30 seconds first to open my app :/
-const val DEFAULT_DELAY_SECONDS: Long = 5
+const val DEFAULT_DELAY_SECONDS: Long = 30
 
-//todo: do a factory here i want instantiate network just only once
+//todo: do a factory here; i want instantiate network just only once
 class NetworkUtils {
 
     companion object {
@@ -72,7 +71,8 @@ class NetworkUtils {
 
         stopScheduler()
         this.subscribe = Observable
-                .interval(DEFAULT_DELAY_SECONDS, TimeUnit.SECONDS).take(maxRequests.toLong())
+                .interval(DEFAULT_DELAY_SECONDS, TimeUnit.SECONDS)
+                .take(maxRequests.toLong())
                 .flatMap {
                     retrofit.getStops(
                             NetworkData.apiKey,
