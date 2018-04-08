@@ -47,16 +47,17 @@ class LineAdapter(private val context: Context)
 
         holder?.setImage(stationId == element.stationId)
         holder?.setText(
-                element.name.toString()
+                element.name.toString(),
+                selectedId == element.stationId
         ) ?: context.getString(R.string.no_line_name)
 
-        holder?.setOnClick { _ ->
-            if (element.stationId == selectedId) {
+        holder?.setOnClick {
+            if (selectedId == element.stationId) {
                 selectedId = ""
-                true
+                false
             } else {
                 selectedId = element.stationId
-                false
+                true
             }
         }
     }
@@ -88,21 +89,25 @@ class LineAdapter(private val context: Context)
             }
         }
 
-        fun setText(text: String) {
-            stationNameSelected.text = text
-            stationName.text = text
+        private fun changeTextSize(large: Boolean) {
+            if (large) {
+                stationNameSelected.visibility = TextView.VISIBLE
+                stationName.visibility = TextView.GONE
+            } else {
+                stationName.visibility = TextView.VISIBLE
+                stationNameSelected.visibility = TextView.GONE
+            }
         }
 
-        //todo this can't works because you are using a RECYCLER VIEW, find another method
+        fun setText(text: String, isLarge:Boolean) {
+            stationNameSelected.text = text
+            stationName.text = text
+            changeTextSize(isLarge)
+        }
+
         fun setOnClick(onClick: (Context) -> Boolean) {
             view?.setOnClickListener { v ->
-                if (onClick(v.context)) {
-                    stationNameSelected.visibility = TextView.VISIBLE
-                    stationName.visibility = TextView.GONE
-                } else {
-                    stationName.visibility = TextView.VISIBLE
-                    stationNameSelected.visibility = TextView.GONE
-                }
+                changeTextSize(onClick(v.context))
             }
         }
     }
