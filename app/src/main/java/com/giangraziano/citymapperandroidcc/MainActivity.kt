@@ -2,6 +2,7 @@ package com.giangraziano.citymapperandroidcc
 
 import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -66,7 +67,6 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         getPosition()
         showProgressBar()
-
     }
 
     private fun getPosition() {
@@ -109,6 +109,20 @@ class MainActivity : AppCompatActivity() {
             )
         } catch (ex: SecurityException) {
             Log.d(TAG, "Security Exception, no location available: ${ex.localizedMessage}")
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+            requestCode: Int,
+            permissions: Array<String>,
+            grantResults: IntArray
+    ) {
+        if (requestCode == MY_PERMISSIONS_REQUEST_ACCESS_LOCATION) {
+            if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getLocation()
+            } else {
+                hideProgressBar(false)
+            }
         }
     }
 
