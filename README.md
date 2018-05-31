@@ -1,4 +1,4 @@
-# City Mapper Coding Challenge 
+# Map Cities  
 
 ## known bugs:
 * Initial loading is not really fast, this should be improved using better RxJava, 
